@@ -3,11 +3,13 @@ import { getUsers } from "../api/users";
 import Loader from "../components/Loader";
 import Error from "../components/error";
 import UserCard from "../components/UserCard";
+import { deleteUser } from "../api/users";
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     async function loadUsers() {
@@ -22,7 +24,7 @@ function Users() {
     }
     loadUsers();
   }, []);
-
+  console.log("Users data: ----- ", users);
   if (loading) {
     return <Loader message="Loading in progress" />;
   }
@@ -30,16 +32,27 @@ function Users() {
   if (error) {
     return <Error message={error} />;
   }
+
+  async function handleDeleteUser(id) {
+    setDeletingId(id);
+    try {
+      await deleteUser(id);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+    } catch (error) {
+      return <Error message={error.message} />;
+    } finally {
+      setDeletingId(null);
+    }
+  }
   return (
     <>
-      {/* {users.map((user) => (
-        <div key={user.id}>
-          <h1> {user.name} </h1>
-          <h1> {user.email} </h1>
-        </div>
-      ))} */}
       {users.map((user) => (
-        <UserCard key={user.id} user={user} />
+        <UserCard
+          key={user.id}
+          user={user}
+          deleteUser={() => handleDeleteUser(user.id)}
+          deleting={deletingId == user.id}
+        />
       ))}
     </>
   );
