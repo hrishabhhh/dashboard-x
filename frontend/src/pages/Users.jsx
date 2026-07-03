@@ -4,6 +4,7 @@ import Loader from "../components/Loader";
 import Error from "../components/error";
 import UserCard from "../components/UserCard";
 import { deleteUser } from "../api/users";
+import UserForm from "../components/UserForm";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ function Users() {
     }
     loadUsers();
   }, []);
-  console.log("Users data: ----- ", users);
+  // console.log("Users data: ----- ", users);
   if (loading) {
     return <Loader message="Loading in progress" />;
   }
@@ -44,8 +45,16 @@ function Users() {
       setDeletingId(null);
     }
   }
+
+  function handleUserCreated(createdUser) {
+    setUsers((prevUsers) => [...prevUsers, createdUser]);
+  }
+
   return (
     <>
+      <div>
+        <UserForm newCreatedUser={handleUserCreated} />
+      </div>
       {users.map((user) => (
         <UserCard
           key={user.id}
