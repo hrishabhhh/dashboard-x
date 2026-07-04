@@ -14,3 +14,8 @@ export async function createUser(userData) {
   const response = await api.post("/users", userData);
   return response.data.user || response.data;
 }
+
+export async function updateUser(id, userData) {
+  const response = await api.put(`/users/${id}`, userData);
+  return response.data.user || response.data;
+}

@@ -11,6 +11,7 @@ function Users() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
     async function loadUsers() {
@@ -46,14 +47,33 @@ function Users() {
     }
   }
 
+  function handleUserUpdated(updatedUser) {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? updatedUser : user,
+      ),
+    );
+
+    setEditingUser(null);
+  }
+
   function handleUserCreated(createdUser) {
     setUsers((prevUsers) => [...prevUsers, createdUser]);
+  }
+
+  function handleEditUser(users) {
+    setEditingUser(users);
+    console.log(editingUser);
   }
 
   return (
     <>
       <div>
-        <UserForm newCreatedUser={handleUserCreated} />
+        <UserForm
+          newCreatedUser={handleUserCreated}
+          editingUser={editingUser}
+          onUserUpdated={handleUserUpdated}
+        />
       </div>
       {users.map((user) => (
         <UserCard
@@ -61,6 +81,7 @@ function Users() {
           user={user}
           deleteUser={() => handleDeleteUser(user.id)}
           deleting={deletingId == user.id}
+          onEditUser={() => handleEditUser(user)}
         />
       ))}
     </>

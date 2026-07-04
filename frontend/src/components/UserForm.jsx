@@ -1,16 +1,7 @@
-import { useState } from "react";
-import { createUser } from "../api/users";
+import { useEffect, useState } from "react";
+import { createUser, updateUser } from "../api/users";
 
-function UserForm({ newCreatedUser }) {
-  const [user, setUser] = useState({
-    name: "",
-    username: "",
-    email: "",
-    phone: "",
-    website: "",
-    company: "",
-  });
-
+function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   const initialUser = {
     name: "",
     username: "",
@@ -19,6 +10,24 @@ function UserForm({ newCreatedUser }) {
     website: "",
     company: "",
   };
+
+  const [user, setUser] = useState(initialUser);
+
+  useEffect(() => {
+    if (editingUser) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUser({
+        name: editingUser.name || "",
+        username: editingUser.username || "",
+        email: editingUser.email || "",
+        phone: editingUser.phone || "",
+        website: editingUser.website || "",
+        company: editingUser.company?.name || editingUser.company || "",
+      });
+    } else {
+      setUser(initialUser);
+    }
+  }, [editingUser]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -30,13 +39,18 @@ function UserForm({ newCreatedUser }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const createdUser = await createUser(user);
-      // console.log("Created user:------------", createdUser);
-      newCreatedUser(createdUser);
-      setUser(initialUser);
-    } catch (error) {
-      console.error("Error creating user:", error);
+    if (editingUser) {
+      const editedUser = await updateUser(editingUser.id, user);
+      onUserUpdated(editedUser);
+    } else {
+      try {
+        const createdUser = await createUser(user);
+        // console.log("Created user:------------", createdUser);
+        newCreatedUser(createdUser);
+        setUser(initialUser);
+      } catch (error) {
+        console.error("Error creating user:", error);
+      }
     }
   }
 
@@ -88,10 +102,10 @@ function UserForm({ newCreatedUser }) {
       </div>
       <div>
         <button
-          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-300 m-5"
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 m-5"
           onClick={handleSubmit}
         >
-          Add User
+          {editingUser ? "Update User" : "Add User"}
         </button>
       </div>
     </>
