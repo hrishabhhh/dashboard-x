@@ -21,7 +21,8 @@ function UserCard({ user, deleteUser, deleting, onEditUser }) {
         </p>
 
         <p>
-          <span className="font-semibold">🏢 Company:</span> {user.company.name}
+          <span className="font-semibold">🏢 Company:</span>
+          {user.company?.name || user.company}
         </p>
         <button
           onClick={deleteUser}
