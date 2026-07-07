@@ -49,11 +49,43 @@ export async function putUserService(id, userData) {
 }
 
 export async function patchUserService(id, userData) {
-  const response = await api.patch(`/users/${id}`, userData);
-  return response.data;
+  const data = await readUsers();
+  let ind = -1;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id == id) {
+      ind = i;
+      break;
+    }
+  }
+  if (ind == -1) {
+    return null;
+  }
+  // debugger;
+  const oldUser = data[ind];
+  // console.log("olduser-----", oldUser);
+  const response = {
+    ...oldUser,
+    ...userData,
+    company: userData.company ? { name: userData.company } : oldUser.company,
+  };
+  data[ind] = response;
+  await writeUsers(data);
+  return response;
 }
 
 export async function deleteUserService(id) {
-  const response = await api.delete(`/users/${id}`);
-  return response.data;
+  const data = await readUsers();
+  let ind = -1;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id == id) {
+      ind = i;
+      break;
+    }
+  }
+  if (ind == -1) {
+    return null;
+  }
+  let deletedResponse = data.splice(ind, 1);
+  await writeUsers(data);
+  return deletedResponse[0];
 }

@@ -206,28 +206,6 @@
     }
   },
   {
-    "id": 11,
-    "name": "Hrishabh Jain",
-    "username": "psdcadmin",
-    "email": "hrishabhsinghai77@gmail.com",
-    "phone": "08057399251",
-    "website": "https://myportfolio-rho-nine.vercel.app/",
-    "company": {
-      "name": "chandigarh university"
-    }
-  },
-  {
-    "name": "Hrishabh Jain",
-    "username": "psdc",
-    "email": "hrishabhsinghai77@gmail.com",
-    "phone": "08057399251",
-    "website": "https://myportfolio-rho-nine.vercel.app/",
-    "company": {
-      "name": "chandigarh university"
-    },
-    "id": 12
-  },
-  {
     "id": 13,
     "name": "vishal dua",
     "username": "hrjab3_R",
@@ -240,13 +218,13 @@
   },
   {
     "id": 14,
-    "name": "Manisha Jain",
-    "username": "maaniusha",
-    "email": "hri@gmailcom",
-    "phone": "9848839222",
-    "website": "port 1000",
+    "name": "Hrishabh Jain",
+    "username": "psdc",
+    "email": "hrishabhsinghai77@gmail.com",
+    "phone": "8057399251",
+    "website": "https://myportfolio-rho-nine.vercel.app/",
     "company": {
-      "name": "nanana"
+      "name": "chandigarh university"
     }
   }
 ]
