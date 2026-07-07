@@ -1,6 +1,16 @@
 import { readUsers, writeUsers } from "../../utils/file.js";
 // import api from "../config/axios.js";
 
+function buildUser(id, userData) {
+  return {
+    id,
+    ...userData,
+    company: {
+      name: userData.company,
+    },
+  };
+}
+
 export async function fetchUsers() {
   const response = await readUsers();
   return response;
@@ -14,25 +24,28 @@ export async function createUserService(userData) {
       maxId = data[i].id;
     }
   }
-  const response = {
-    id: maxId + 1,
-    name: userData.name,
-    username: userData.username,
-    email: userData.email,
-    phone: userData.phone,
-    website: userData.website,
-    company: {
-      name: userData.company,
-    },
-  };
+  const response = buildUser(maxId + 1, userData);
   data.push(response);
   await writeUsers(data);
   return response;
 }
 
 export async function putUserService(id, userData) {
-  const response = await api.put(`/users/${id}`, userData);
-  return response.data;
+  const data = await readUsers();
+  let ind = -1;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id == id) {
+      ind = i;
+      break;
+    }
+  }
+  if (ind == -1) {
+    return null;
+  }
+  const response = buildUser(data[ind].id, userData);
+  data[ind] = response;
+  await writeUsers(data);
+  return response;
 }
 
 export async function patchUserService(id, userData) {

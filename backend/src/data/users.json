@@ -1,25 +1,13 @@
 [
   {
     "id": 1,
-    "name": "Leanne Graham",
+    "name": "Leanne",
     "username": "Bret",
     "email": "Sincere@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
-      }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
+    "phone": "1-770-736",
+    "website": "hildegard",
     "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
+      "name": "Romaguera-Crona"
     }
   },
   {
@@ -162,25 +150,13 @@
   },
   {
     "id": 8,
-    "name": "Nicholas Runolfsdottir V",
+    "name": "Nicholas Runol",
     "username": "Maxime_Nienow",
     "email": "Sherwood@rosamond.me",
-    "address": {
-      "street": "Ellsworth Summit",
-      "suite": "Suite 729",
-      "city": "Aliyaview",
-      "zipcode": "45169",
-      "geo": {
-        "lat": "-14.3990",
-        "lng": "-120.7677"
-      }
-    },
     "phone": "586.493.6943 x140",
     "website": "jacynthe.com",
     "company": {
-      "name": "Abernathy Group",
-      "catchPhrase": "Implemented secondary concept",
-      "bs": "e-enable extensible e-tailers"
+      "name": "Abernathy Group"
     }
   },
   {
@@ -250,5 +226,27 @@
       "name": "chandigarh university"
     },
     "id": 12
+  },
+  {
+    "id": 13,
+    "name": "vishal dua",
+    "username": "hrjab3_R",
+    "email": "20BC@gmail.com",
+    "phone": "08650970442",
+    "website": "portfolio-rho-",
+    "company": {
+      "name": "CU-APex"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Manisha Jain",
+    "username": "maaniusha",
+    "email": "hri@gmailcom",
+    "phone": "9848839222",
+    "website": "port 1000",
+    "company": {
+      "name": "nanana"
+    }
   }
 ]
