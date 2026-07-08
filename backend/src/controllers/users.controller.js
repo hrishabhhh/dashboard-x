@@ -5,8 +5,9 @@ import {
   putUserService,
   patchUserService,
 } from "../services/users.service.js";
+import validateUser from "../validators/user.validator.js";
 
-export async function getUsers(req, res) {
+export async function getUsers(req, res, next) {
   try {
     const users = await fetchUsers();
     res.json(users);
@@ -14,13 +15,11 @@ export async function getUsers(req, res) {
     console.error("GET USERS ERROR:");
     console.error(error);
 
-    return res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function deleteUser(req, res) {
+export async function deleteUser(req, res, next) {
   try {
     const { id } = req.params;
     await deleteUserService(id);
@@ -29,16 +28,22 @@ export async function deleteUser(req, res) {
       message: "User deleted successfully",
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function createUser(req, res) {
+export async function createUser(req, res, next) {
   try {
     const userData = req.body;
+    const validatedData = validateUser(userData);
+    // console.log("val data-----", validatedData);
+    if (!validatedData.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Validtion failed",
+        errors: validatedData.errors,
+      });
+    }
     const createdUser = await createUserService(userData);
     if (!createdUser) {
       return res.status(400).json({
@@ -53,15 +58,11 @@ export async function createUser(req, res) {
       user: createdUser,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-      user: null,
-    });
+    next(error);
   }
 }
 
-export async function putUser(req, res) {
+export async function putUser(req, res, next) {
   try {
     const { id } = req.params;
     const userData = req.body;
@@ -79,14 +80,11 @@ export async function putUser(req, res) {
       user: updatedUser,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function patchUser(req, res) {
+export async function patchUser(req, res, next) {
   try {
     const { id } = req.params;
     const userData = req.body;
@@ -104,9 +102,6 @@ export async function patchUser(req, res) {
       user: patchedUser,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 }
