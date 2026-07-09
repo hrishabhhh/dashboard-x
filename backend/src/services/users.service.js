@@ -40,7 +40,7 @@ export async function putUserService(id, userData) {
     }
   }
   if (ind == -1) {
-    return null;
+    throw new AppError("User not found", 404);
   }
   const response = buildUser(data[ind].id, userData);
   data[ind] = response;
@@ -58,7 +58,7 @@ export async function patchUserService(id, userData) {
     }
   }
   if (ind == -1) {
-    return null;
+    throw new AppError("User not found", 404);
   }
   // debugger;
   const oldUser = data[ind];
@@ -83,7 +83,7 @@ export async function deleteUserService(id) {
     }
   }
   if (ind == -1) {
-    return null;
+    throw new AppError("User not found", 404);
   }
   let deletedResponse = data.splice(ind, 1);
   await writeUsers(data);

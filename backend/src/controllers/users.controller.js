@@ -23,18 +23,14 @@ export async function getUsers(req, res, next) {
   }
 }
 
-export async function deleteUser(req, res, next) {
-  try {
-    const { id } = req.params;
-    await deleteUserService(id);
-    res.json({
-      success: true,
-      message: "User deleted successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-}
+export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  await deleteUserService(id);
+  res.json({
+    success: true,
+    message: "User deleted successfully",
+  });
+});
 
 export const createUser = asyncHandler(async (req, res) => {
   const userData = req.body;
@@ -63,67 +59,45 @@ export const createUser = asyncHandler(async (req, res) => {
   });
 });
 
-export async function putUser(req, res, next) {
-  try {
-    const { id } = req.params;
-    const userData = req.body;
+export const putUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userData = req.body;
 
-    const validatedData = validateUser(userData);
+  const validatedData = validateUser(userData);
 
-    if (!validatedData.isValid) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation failed",
-        errors: validatedData.errors,
-      });
-    }
-    console.log("val data-----", validatedData);
-    const updatedUser = await putUserService(id, userData);
-    if (!updatedUser) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "User replaced successfully",
-      user: updatedUser,
+  if (!validatedData.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: validatedData.errors,
     });
-  } catch (error) {
-    next(error);
   }
-}
+  // console.log("val data-----", validatedData);
+  const updatedUser = await putUserService(id, userData);
 
-export async function patchUser(req, res, next) {
-  try {
-    const { id } = req.params;
-    const userData = req.body;
-    const validatedUser = validatePatchUser(userData);
+  return res.status(200).json({
+    success: true,
+    message: "User replaced successfully",
+    user: updatedUser,
+  });
+});
 
-    if (!validatedUser.isValid) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation failed",
-        errors: validatedUser.errors,
-      });
-    }
+export const patchUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userData = req.body;
+  const validatedUser = validatePatchUser(userData);
 
-    const patchedUser = await patchUserService(id, userData);
-
-    if (!patchedUser) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      message: "User Data has been modified successfully",
-      user: patchedUser,
+  if (!validatedUser.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: validatedUser.errors,
     });
-  } catch (error) {
-    next(error);
   }
-}
+  const patchedUser = await patchUserService(id, userData);
+  return res.status(200).json({
+    success: true,
+    message: "User Data has been modified successfully",
+    user: patchedUser,
+  });
+});
