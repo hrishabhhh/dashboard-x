@@ -1,3 +1,4 @@
+import { asyncHandler } from "../../utils/asyncHandler.js";
 import {
   fetchUsers,
   deleteUserService,
@@ -5,7 +6,10 @@ import {
   putUserService,
   patchUserService,
 } from "../services/users.service.js";
-import validateUser from "../validators/user.validator.js";
+import {
+  validateUser,
+  validatePatchUser,
+} from "../validators/user.validator.js";
 
 export async function getUsers(req, res, next) {
   try {
@@ -32,40 +36,48 @@ export async function deleteUser(req, res, next) {
   }
 }
 
-export async function createUser(req, res, next) {
-  try {
-    const userData = req.body;
-    const validatedData = validateUser(userData);
-    // console.log("val data-----", validatedData);
-    if (!validatedData.isValid) {
-      return res.status(400).json({
-        success: false,
-        message: "Validtion failed",
-        errors: validatedData.errors,
-      });
-    }
-    const createdUser = await createUserService(userData);
-    if (!createdUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User creation failed",
-        user: null,
-      });
-    }
-    res.status(201).json({
-      success: true,
-      message: "User created successfully",
-      user: createdUser,
+export const createUser = asyncHandler(async (req, res) => {
+  const userData = req.body;
+  // console.log("Userdata - - - - -", userData);
+  const validatedData = validateUser(userData);
+
+  if (!validatedData.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: validatedData.errors,
     });
-  } catch (error) {
-    next(error);
   }
-}
+  // console.log("errors data - - - ", validatedData);
+  const createdUser = await createUserService(userData);
+  if (!createdUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User creation failed",
+      user: null,
+    });
+  }
+  res.status(201).json({
+    success: true,
+    user: createdUser,
+  });
+});
 
 export async function putUser(req, res, next) {
   try {
     const { id } = req.params;
     const userData = req.body;
+
+    const validatedData = validateUser(userData);
+
+    if (!validatedData.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: validatedData.errors,
+      });
+    }
+    console.log("val data-----", validatedData);
     const updatedUser = await putUserService(id, userData);
     if (!updatedUser) {
       return res.status(404).json({
@@ -88,6 +100,16 @@ export async function patchUser(req, res, next) {
   try {
     const { id } = req.params;
     const userData = req.body;
+    const validatedUser = validatePatchUser(userData);
+
+    if (!validatedUser.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: validatedUser.errors,
+      });
+    }
+
     const patchedUser = await patchUserService(id, userData);
 
     if (!patchedUser) {

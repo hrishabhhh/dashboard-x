@@ -215,5 +215,38 @@
     "company": {
       "name": "CU-APex"
     }
+  },
+  {
+    "id": 14,
+    "name": "Hrishabh Jain",
+    "username": "psdcadmin",
+    "email": "hrishabhsinghai7999@gmail.com",
+    "phone": "8057399251",
+    "website": "https://myportfolio-rho-nine.vercel.app/",
+    "company": {
+      "name": "chandigarh university"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Hrishabh Jain",
+    "username": "psdcadmin",
+    "email": "hrishabhsinghai77@gmail.com",
+    "phone": "8057399251",
+    "website": "https://myportfolio-rho-nine.vercel.app/",
+    "company": {
+      "name": "chandigarh university"
+    }
+  },
+  {
+    "id": 16,
+    "name": "Manisha Jain",
+    "username": "psdcadmin",
+    "email": "hrishabhsinghai77@gmail.com",
+    "phone": "9286509704",
+    "website": "https://myportfolio-rho-nine.vercel.app/",
+    "company": {
+      "name": "chandigarh university"
+    }
   }
 ]
