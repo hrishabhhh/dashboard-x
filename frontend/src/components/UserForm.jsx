@@ -12,6 +12,7 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   };
 
   const [user, setUser] = useState(initialUser);
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     if (editingUser) {
@@ -35,6 +36,7 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
       ...prevUser,
       [name]: value,
     }));
+    setErrors([]);
   }
 
   async function handleSubmit(e) {
@@ -49,14 +51,14 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
         newCreatedUser(createdUser);
         setUser(initialUser);
       } catch (error) {
-        console.error("Error creating user:", error);
+        setErrors(error.response.data.errors);
       }
     }
   }
 
   return (
     <>
-      <div className="m-5 flex flex-col max-w-md gap-2 [input]:p-2 [input]:m-2">
+      <div className="m-5 flex flex-col max-w-md gap-2 [&_input]:border [&_input]:border-[#000] [&_input]:rounded [&_input]:px-2 [&_input]:py-1">
         <input
           type="text"
           name="name"
@@ -100,6 +102,11 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
           onChange={handleChange}
         />
       </div>
+      {errors.map((error, index) => (
+        <p className="text-red-500 ml-5" key={index}>
+          {error}
+        </p>
+      ))}
       <div>
         <button
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 m-5"
