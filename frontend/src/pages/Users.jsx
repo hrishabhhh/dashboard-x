@@ -75,6 +75,9 @@ function Users() {
           onUserUpdated={handleUserUpdated}
         />
       </div>
+      <h3 className="text-bold mx-6 my-4 font-bold text-[22px]">
+        Added Users :
+      </h3>
       {users.map((user) => (
         <UserCard
           key={user.id}

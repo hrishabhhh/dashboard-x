@@ -210,10 +210,32 @@
     "name": "vishal dua",
     "username": "hrjab3_R",
     "email": "20BC@gmail.com",
-    "phone": "08650970442",
+    "phone": "8650970442",
     "website": "portfolio-rho-",
     "company": {
       "name": "CU-APex"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Hrishabh Jain",
+    "username": "psdcadmin",
+    "email": "hrishabhsinghai@77gmail.com",
+    "phone": "8057399251",
+    "website": "https",
+    "company": {
+      "name": "chandigarh university"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Hrishabh Jain",
+    "username": "psdcadmin",
+    "email": "hrishabhsinghai77@gmail.com",
+    "phone": "8057399251",
+    "website": "",
+    "company": {
+      "name": "chandigarh university"
     }
   }
 ]
