@@ -237,5 +237,16 @@
     "company": {
       "name": "chandigarh university"
     }
+  },
+  {
+    "id": 16,
+    "name": "Manisha Jain",
+    "username": "hrjab3_R",
+    "email": "hrishabhjain100@gmail.com",
+    "phone": "8650970442",
+    "website": "https://myportfolio-rho-nine.vercel.app/",
+    "company": {
+      "name": "chandigarh university"
+    }
   }
 ]
