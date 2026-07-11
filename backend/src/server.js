@@ -2,7 +2,7 @@ import "dotenv/config";
 import app from "./app.js";
 
 // dotenv.config();
-import { connectDB } from "./config/db.js";
+import { connectDB } from "../src/config/db.js";
 
 const PORT = process.env.PORT;
 // console.log("BASE URL: ", process.env.API_BASE_URL);
