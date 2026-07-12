@@ -35,11 +35,11 @@ function Users() {
     return <Error message={error} />;
   }
 
-  async function handleDeleteUser(id) {
-    setDeletingId(id);
+  async function handleDeleteUser(_id) {
+    setDeletingId(_id);
     try {
-      await deleteUser(id);
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      await deleteUser(_id);
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== _id));
     } catch (error) {
       return <Error message={error.message} />;
     } finally {
@@ -50,7 +50,7 @@ function Users() {
   function handleUserUpdated(updatedUser) {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user,
+        user._id === updatedUser._id ? updatedUser : user,
       ),
     );
 
@@ -80,10 +80,10 @@ function Users() {
       </h3>
       {users.map((user) => (
         <UserCard
-          key={user.id}
+          key={user._id}
           user={user}
-          deleteUser={() => handleDeleteUser(user.id)}
-          deleting={deletingId == user.id}
+          deleteUser={() => handleDeleteUser(user._id)}
+          deleting={deletingId == user._id}
           onEditUser={() => handleEditUser(user)}
         />
       ))}

@@ -5,8 +5,8 @@ export async function getUsers() {
   return response.data;
 }
 
-export async function deleteUser(id) {
-  const response = await api.delete(`/users/${id}`);
+export async function deleteUser(_id) {
+  const response = await api.delete(`/users/${_id}`);
   return response.data;
 }
 
@@ -15,7 +15,7 @@ export async function createUser(userData) {
   return response.data.user || response.data;
 }
 
-export async function updateUser(id, userData) {
-  const response = await api.put(`/users/${id}`, userData);
+export async function updateUser(_id, userData) {
+  const response = await api.put(`/users/${_id}`, userData);
   return response.data.user || response.data;
 }

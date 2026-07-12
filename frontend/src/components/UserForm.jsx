@@ -48,7 +48,7 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (editingUser) {
-      const editedUser = await updateUser(editingUser.id, user);
+      const editedUser = await updateUser(editingUser._id, user);
       onUserUpdated(editedUser);
     } else {
       try {
