@@ -47,18 +47,20 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (editingUser) {
-      const editedUser = await updateUser(editingUser._id, user);
-      onUserUpdated(editedUser);
-    } else {
-      try {
+
+    try {
+      if (editingUser) {
+        const editedUser = await updateUser(editingUser._id, user);
+        onUserUpdated(editedUser);
+      } else {
         const createdUser = await createUser(user);
         // console.log("Created user:------------", createdUser);
         newCreatedUser(createdUser);
         setUser(initialUser);
-      } catch (error) {
-        setErrors(error.response.data.errors);
+        setErrors([]);
       }
+    } catch (error) {
+      setErrors(error.response.data.errors);
     }
   }
 
