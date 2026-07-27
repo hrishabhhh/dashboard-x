@@ -78,15 +78,17 @@ function Users() {
       <h3 className="text-bold mx-6 my-4 font-bold text-[22px]">
         Added Users :
       </h3>
-      {users.map((user) => (
-        <UserCard
-          key={user._id}
-          user={user}
-          deleteUser={() => handleDeleteUser(user._id)}
-          deleting={deletingId == user._id}
-          onEditUser={() => handleEditUser(user)}
-        />
-      ))}
+      <div className="flex flex-col gap-5 m-5">
+        {users.map((user) => (
+          <UserCard
+            key={user._id}
+            user={user}
+            deleteUser={() => handleDeleteUser(user._id)}
+            deleting={deletingId == user._id}
+            onEditUser={() => handleEditUser(user)}
+          />
+        ))}
+      </div>
     </>
   );
 }

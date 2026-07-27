@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createUser, updateUser } from "../api/users";
 import { useRef } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   const initialUser = {
@@ -15,6 +16,8 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   const formRef = useRef(null);
   const [user, setUser] = useState(initialUser);
   const [errors, setErrors] = useState([]);
+
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (editingUser) {
@@ -66,7 +69,13 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
 
   return (
     <>
-      <div className="flex items-center justify-center bg-gray-100 px-2 py-4">
+      <div
+        className={`flex items-center justify-center bg-gray-100 px-2 py-4  ${
+          theme === "dark"
+            ? "bg-gray-900 text-white "
+            : "bg-gray-100 text-black "
+        }`}
+      >
         <div className="w-full max-w-lg rounded-xl bg-white p-2 shadow-lg">
           <h2 className="mb-2 text-center text-2xl font-bold text-gray-800">
             {editingUser ? "Edit User" : "Create User"}
