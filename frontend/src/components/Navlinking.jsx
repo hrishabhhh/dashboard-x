@@ -10,8 +10,8 @@ function NavLinking({ name, to, className = "" }) {
         transition-colors duration-400
         ${
           isActive
-            ? "text-black-300 font-semibold"
-            : "text-white hover:text-gray-200"
+            ? "text-grey-500 font-bold"
+            : "text-white hover:text-black-300"
         }
       `
       }
