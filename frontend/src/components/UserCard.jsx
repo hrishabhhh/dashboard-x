@@ -1,6 +1,14 @@
+import { useTheme } from "../hooks/useTheme";
+
 function UserCard({ user, deleteUser, deleting, onEditUser }) {
+  const { theme } = useTheme();
+
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-xl">
+    <div
+      className={`rounded-xl border border-gray-200 p-6 shadow-md transition-shadow duration-300 hover:shadow-xl
+      ${theme === "dark" ? "bg-gray-700 [&_span]:text-white [&_p]:text-white" : "bg-white"}
+    `}
+    >
       <div className="mb-4">
         <h2 className="text-2xl font-bold text-gray-800">{user.name}</h2>
 

@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createUser, updateUser } from "../api/users";
 import { useRef } from "react";
-import { ThemeContext } from "../context/ThemeContext";
+import { useTheme } from "../hooks/useTheme";
 
 function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   const initialUser = {
@@ -17,7 +17,7 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
   const [user, setUser] = useState(initialUser);
   const [errors, setErrors] = useState([]);
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (editingUser) {
@@ -71,12 +71,14 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
     <>
       <div
         className={`flex items-center justify-center bg-gray-100 px-2 py-4  ${
-          theme === "dark"
-            ? "bg-gray-900 text-white "
-            : "bg-gray-100 text-black "
+          theme === "dark" ? "bg-gray-900  " : "bg-gray-100 "
         }`}
       >
-        <div className="w-full max-w-lg rounded-xl bg-white p-2 shadow-lg">
+        <div
+          className={`w-full max-w-lg rounded-xl p-2 shadow-lg ${
+            theme === "dark" ? "bg-gray-700" : "bg-white"
+          }`}
+        >
           <h2 className="mb-2 text-center text-2xl font-bold text-gray-800">
             {editingUser ? "Edit User" : "Create User"}
           </h2>
@@ -84,7 +86,8 @@ function UserForm({ newCreatedUser, editingUser, onUserUpdated }) {
           <div
             ref={formRef}
             className="
-        flex flex-col gap-2 [&_input]:rounded-lg [&_input]:border [&_input]:border-gray-300 [&_input]:px-4 [&_input]:py-2.5 [&_input]:outline-none [&_input]:transition [&_input]:duration-200 [&_input]:focus:border-green-500 [&_input]:focus:ring-2 [&_input]:focus:ring-green-200"
+             flex flex-col gap-2 [&_input]:rounded-lg [&_input]:border [&_input]:border-gray-300 [&_input]:px-4 [&_input]:py-2.5 [&_input]:outline-none [&_input]:transition [&_input]:duration-200 [&_input]:focus:border-green-500 [&_input]:focus:ring-2 [&_input]:focus:ring-green-200
+             ![&_input]:text-gray-700"
           >
             <input
               type="text"

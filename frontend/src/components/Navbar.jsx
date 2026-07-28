@@ -1,8 +1,9 @@
+import { useTheme } from "../hooks/useTheme";
 import NavLinking from "./Navlinking";
-import { useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
+// import { useContext } from "react";
+// import { ThemeContext } from "../context/ThemeContext";
 function Navbar() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useTheme();
   return (
     <nav className="flex flex-row gap-10 p-6 bg-red-500 justify-between">
       <div className="flex flex-row items-center gap-2">
