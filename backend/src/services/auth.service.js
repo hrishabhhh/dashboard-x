@@ -1,21 +1,29 @@
+import { generateOtp } from "../../utils/otpGenerator";
 import userAccount from "../models/account.model";
 import bcrypt from "bcrypt";
 export async function registerUser(userData) {
   //destructure data
   const { name, email, password } = userData;
   const SALT_ROUNDS = 10;
-  const isVerified = false;
-  const emailResponse = await userAccount.findOne({
+  const existingUser = await userAccount.findOne({
     email,
   });
-  if (emailResponse) {
+  if (existingUser) {
     throw new AppError("User already exists", 400);
   } else {
-    const hashed_password = await bcrypt.hash(password, SALT_ROUNDS);
+    const otpExpiry = new Date();
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
+    const hashedpassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    const otp = generateOtp();
+
     const newUser = await userAccount.create({
       name,
       email,
-      isVerified: true,
+      password: hashedpassword,
+      isVerified: false,
+      otp: otp,
+      otpExpiry: otpExpiry,
     });
     return newUser;
   }

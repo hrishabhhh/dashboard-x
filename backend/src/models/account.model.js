@@ -13,7 +13,7 @@ const accountSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      Required: true,
+      required: true,
     },
     isVerified: Boolean,
     otp: String,
