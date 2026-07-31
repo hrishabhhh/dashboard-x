@@ -12,3 +12,15 @@ export async function register(req, res) {
     });
   }
 }
+
+export async function verifyUserOtp(req, res) {
+  try {
+    const response = await verifyOtp(req.body);
+    return res.status(201).json(response);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}

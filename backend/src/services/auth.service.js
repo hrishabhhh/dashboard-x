@@ -2,7 +2,6 @@ import { generateOtp } from "../../utils/otpGenerator";
 import userAccount from "../models/account.model";
 import bcrypt from "bcrypt";
 export async function registerUser(userData) {
-  //destructure data
   const { name, email, password } = userData;
   const SALT_ROUNDS = 10;
   const existingUser = await userAccount.findOne({
@@ -27,4 +26,27 @@ export async function registerUser(userData) {
     });
     return newUser;
   }
+}
+
+export async function verifyUser(userData) {
+  const { email, otp } = userData;
+  const user = await userAccount.findOne({ email });
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  if (user.isVerified) {
+    throw new AppError("User already verified", 400);
+  }
+  if (user.otp !== otp) {
+    throw new AppError("Invalid OTP", 400);
+  }
+  if (new Date() > user.otpExpiry) {
+    throw new AppError("OTP Expired", 400);
+  }
+  user.isVerified = true;
+  user.otp = null;
+  user.otpExpiry = null;
+
+  await user.save();
+  return user;
 }
