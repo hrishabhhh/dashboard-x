@@ -1,6 +1,8 @@
 import { generateOtp } from "../../utils/otpGenerator";
 import userAccount from "../models/account.model";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 export async function registerUser(userData) {
   const { name, email, password } = userData;
   const SALT_ROUNDS = 10;
@@ -49,4 +51,25 @@ export async function verifyUser(userData) {
 
   await user.save();
   return user;
+}
+
+export async function loginUser(userData) {
+  const { email, password } = userData;
+  const user = await userAccount.findOne({ email });
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  if (!user.isVerified) {
+    throw new AppError("User not verified", 400);
+  }
+  const isPassValid = await bcrypt.compare(password, user.password);
+  if (!isPassValid) {
+    throw new AppError("Invalid password", 400);
+  }
+  //generate JWT token
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+  user.password = undefined;
+  return { user, token };
 }

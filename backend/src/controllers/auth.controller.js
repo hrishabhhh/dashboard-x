@@ -24,3 +24,15 @@ export async function verifyUserOtp(req, res) {
     });
   }
 }
+
+export async function login(req, res) {
+  try {
+    const response = await loginUser(req.body);
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
