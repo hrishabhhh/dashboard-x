@@ -1,4 +1,4 @@
-import { readUsers, writeUsers } from "../../utils/file.js";
+import { readUsers, writeUsers } from "../utils/file.js";
 import User from "../models/user.model.js";
 // import api from "../config/axios.js";
 

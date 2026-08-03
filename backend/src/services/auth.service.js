@@ -1,8 +1,8 @@
-import { generateOtp } from "../../utils/otpGenerator";
-import userAccount from "../models/account.model";
+import { generateOtp } from "../utils/otpGenerator.js";
+import userAccount from "../models/account.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import AppError from "../utils/AppError.js";
 export async function registerUser(userData) {
   const { name, email, password } = userData;
   const SALT_ROUNDS = 10;

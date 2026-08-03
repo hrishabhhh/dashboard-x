@@ -1,5 +1,8 @@
-import { registerUser } from "../services/auth.service";
-
+import {
+  registerUser,
+  verifyUser,
+  loginUser,
+} from "../services/auth.service.js";
 export async function register(req, res) {
   try {
     const result = await registerUser(req.body);
@@ -13,9 +16,9 @@ export async function register(req, res) {
   }
 }
 
-export async function verifyUserOtp(req, res) {
+export async function verifyOtp(req, res) {
   try {
-    const response = await verifyOtp(req.body);
+    const response = await verifyUser(req.body);
     return res.status(201).json(response);
   } catch (error) {
     res.status(400).json({
@@ -35,4 +38,11 @@ export async function login(req, res) {
       message: error.message,
     });
   }
+}
+
+export async function getProfile(req, res) {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
 }
