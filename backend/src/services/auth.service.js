@@ -3,6 +3,9 @@ import userAccount from "../models/account.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AppError from "../utils/AppError.js";
+import otpEmailTemplate from "../templates/otpEmailTemplate.js";
+import { sendMail } from "../utils/email.js";
+
 export async function registerUser(userData) {
   const { name, email, password } = userData;
   const SALT_ROUNDS = 10;
@@ -25,6 +28,13 @@ export async function registerUser(userData) {
       isVerified: false,
       otp: otp,
       otpExpiry: otpExpiry,
+    });
+
+    const html = otpEmailTemplate(name, otp);
+    await sendMail({
+      to: email,
+      subject: "Verify your email - Dashboard-X",
+      html: html,
     });
     return newUser;
   }

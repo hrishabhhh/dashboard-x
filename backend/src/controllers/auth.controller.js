@@ -5,11 +5,18 @@ import {
   forgotPasswordService,
   resetPasswordService,
 } from "../services/auth.service.js";
+import sendMail from "../utils/email.js";
+
 export async function register(req, res) {
   try {
     const result = await registerUser(req.body);
 
-    return res.status(201).json(result);
+    return res.status(201).json({
+      success: true,
+      message:
+        "Registration successful. Please check your email for the verification OTP.",
+      user: result,
+    });
   } catch (error) {
     res.status(400).json({
       success: false,
