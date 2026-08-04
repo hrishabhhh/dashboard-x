@@ -2,6 +2,8 @@ import {
   registerUser,
   verifyUser,
   loginUser,
+  forgotPasswordService,
+  resetPasswordService,
 } from "../services/auth.service.js";
 export async function register(req, res) {
   try {
@@ -45,4 +47,28 @@ export async function getProfile(req, res) {
     success: true,
     user: req.user,
   });
+}
+
+export async function forgotPassword(req, res) {
+  try {
+    const response = await forgotPasswordService(req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+export async function resetPassword(req, res) {
+  try {
+    const response = await resetPasswordService(req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }

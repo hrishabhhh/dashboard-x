@@ -18,6 +18,10 @@ const accountSchema = new mongoose.Schema(
     isVerified: Boolean,
     otp: String,
     otpExpiry: Date,
+    otpAttempts: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
