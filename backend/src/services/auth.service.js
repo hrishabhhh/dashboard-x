@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AppError from "../utils/AppError.js";
 import otpEmailTemplate from "../templates/otpEmailTemplate.js";
+import forgotPasswordTemplate from "../templates/forgotPasswordTemplate.js";
 import { sendMail } from "../utils/email.js";
 
 export async function registerUser(userData) {
@@ -91,7 +92,6 @@ export async function forgotPasswordService(userData) {
 
   if (user) {
     const otp = generateOtp();
-
     const otpExpiry = new Date();
     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
 
@@ -99,6 +99,13 @@ export async function forgotPasswordService(userData) {
     user.otpExpiry = otpExpiry;
     user.otpAttempts = 0;
     await user.save();
+
+    const html = forgotPasswordTemplate(user.name, otp);
+    await sendMail({
+      to: user.email,
+      subject: "Reset your password - Dashboard-X",
+      html,
+    });
   }
   return {
     success: true,
