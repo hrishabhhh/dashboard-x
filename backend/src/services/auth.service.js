@@ -6,6 +6,7 @@ import AppError from "../utils/AppError.js";
 import otpEmailTemplate from "../templates/otpEmailTemplate.js";
 import forgotPasswordTemplate from "../templates/forgotPasswordTemplate.js";
 import { sendMail } from "../utils/email.js";
+import { sanitizedUser } from "../utils/sanitizeUser.js";
 
 export async function registerUser(userData) {
   const { name, email, password } = userData;
@@ -37,7 +38,7 @@ export async function registerUser(userData) {
     subject: "Verify your email - Dashboard-X",
     html: html,
   });
-  return newUser;
+  return sanitizedUser(newUser);
 }
 
 export async function verifyUser(userData) {
@@ -60,7 +61,7 @@ export async function verifyUser(userData) {
   user.otpExpiry = null;
 
   await user.save();
-  return user;
+  return sanitizedUser(user);
 }
 
 export async function loginUser(userData) {
@@ -80,8 +81,8 @@ export async function loginUser(userData) {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-  user.password = undefined;
-  return { user, token };
+  // user.password = undefined;
+  return { user: sanitizedUser(user), token };
 }
 
 export async function forgotPasswordService(userData) {

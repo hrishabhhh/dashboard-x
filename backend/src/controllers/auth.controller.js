@@ -6,6 +6,7 @@ import {
   resetPasswordService,
 } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { sanitizedUser } from "../utils/sanitizeUser.js";
 
 export const register = asyncHandler(async (req, res) => {
   const result = await registerUser(req.body);
@@ -30,7 +31,7 @@ export const login = asyncHandler(async (req, res) => {
 export const getProfile = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
-    user: req.user,
+    user: sanitizedUser(req.user),
   });
 });
 
