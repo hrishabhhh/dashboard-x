@@ -15,30 +15,29 @@ export async function registerUser(userData) {
   });
   if (existingUser) {
     throw new AppError("User already exists", 400);
-  } else {
-    const otpExpiry = new Date();
-    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
-    const hashedpassword = await bcrypt.hash(password, SALT_ROUNDS);
-
-    const otp = generateOtp();
-
-    const newUser = await userAccount.create({
-      name,
-      email,
-      password: hashedpassword,
-      isVerified: false,
-      otp: otp,
-      otpExpiry: otpExpiry,
-    });
-
-    const html = otpEmailTemplate(name, otp);
-    await sendMail({
-      to: email,
-      subject: "Verify your email - Dashboard-X",
-      html: html,
-    });
-    return newUser;
   }
+  const otpExpiry = new Date();
+  otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
+  const hashedpassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+  const otp = generateOtp();
+
+  const newUser = await userAccount.create({
+    name,
+    email,
+    password: hashedpassword,
+    isVerified: false,
+    otp: otp,
+    otpExpiry: otpExpiry,
+  });
+
+  const html = otpEmailTemplate(name, otp);
+  await sendMail({
+    to: email,
+    subject: "Verify your email - Dashboard-X",
+    html: html,
+  });
+  return newUser;
 }
 
 export async function verifyUser(userData) {
@@ -119,9 +118,6 @@ export async function resetPasswordService(userData) {
   const user = await userAccount.findOne({ email });
   if (!user) {
     throw new AppError("User not found", 404);
-  }
-  if (!email || !otp || !newPassword) {
-    throw new AppError("All fields are required", 400);
   }
   if (new Date() > user.otpExpiry) {
     user.otp = null;
