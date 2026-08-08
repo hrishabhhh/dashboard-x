@@ -5,7 +5,11 @@ import cors from "cors";
 import { errorHandler } from "./middleware/error.middleware.js";
 import helmet from "helmet";
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 app.use(helmet());
 app.use(express.json());
 
