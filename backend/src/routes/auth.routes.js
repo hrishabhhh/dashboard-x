@@ -16,7 +16,10 @@ import {
   resetPasswordSchema,
   verifyOtpSchema,
 } from "../validators/auth.validatior.js";
+import { authLimiter } from "../middleware/ratelimit.middleware.js";
 const router = express.Router();
+
+router.use(authLimiter);
 
 router.post("/register", validate(registerSchema), register);
 
