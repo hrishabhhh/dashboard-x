@@ -10,9 +10,23 @@ import Home from "../pages/Home";
 import Users from "../pages/Users";
 import Login from "../pages/Login";
 import Posts from "../pages/Posts";
+import Register from "../pages/Register";
+import VerifyOtp from "../pages/verify-otp";
 
 function AppRouter() {
   const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/verify-otp",
+      element: <VerifyOtp />,
+    },
     {
       path: "/",
       element: <MainLayout />,
@@ -22,15 +36,11 @@ function AppRouter() {
           element: <Home />,
         },
         {
-          path: "/users",
+          path: "users",
           element: <Users />,
         },
         {
-          path: "/Login",
-          element: <Login />,
-        },
-        {
-          path: "/Posts",
+          path: "posts",
           element: <Posts />,
         },
       ],

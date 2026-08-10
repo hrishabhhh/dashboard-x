@@ -12,18 +12,20 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function checkAuth() {
       const token = localStorage.getItem("token");
+      try {
+        if (!token) {
+          setUser(null);
+          return;
+        }
+        const user = await getCurrentUser();
 
-      const user = await getCurrentUser();
-
-      setUser(user);
-      setLoading(false);
-
-      if (!token) {
+        setUser(user);
+      } catch {
+        localStorage.removeItem("token");
+        setUser(null);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      setLoading(false);
     }
     checkAuth();
   }, []);

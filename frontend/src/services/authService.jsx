@@ -12,5 +12,6 @@ export async function logout() {
 }
 
 export async function getCurrentUser() {
-  // API call will go here
+  const response = await api.get("/auth/profile");
+  return response.data.user;
 }
