@@ -41,26 +41,42 @@ function Register() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </form>
+      <div className="flex flex-row gap-5 m-10">
+        {error && <p>{error}</p>}
+
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-10 justify-center items-center"
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="border"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="border"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="border"
+          />
+          <button type="submit" disabled={loading} className="bg-green-500 p-5">
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
+      </div>
     </>
   );
 }
