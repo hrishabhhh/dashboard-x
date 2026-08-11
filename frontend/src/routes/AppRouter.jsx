@@ -14,6 +14,7 @@ import Register from "../pages/Register";
 import VerifyOtp from "../pages/verify-otp";
 import ResetPassword from "../pages/resetPass";
 import ForgotPassword from "../pages/forgotPass";
+import ProtectedRoutes from "../components/ProtectedRoutes";
 
 function AppRouter() {
   const router = createBrowserRouter([
@@ -46,12 +47,17 @@ function AppRouter() {
           element: <Home />,
         },
         {
-          path: "users",
-          element: <Users />,
-        },
-        {
-          path: "posts",
-          element: <Posts />,
+          element: <ProtectedRoutes />,
+          children: [
+            {
+              path: "users",
+              element: <Users />,
+            },
+            {
+              path: "posts",
+              element: <Posts />,
+            },
+          ],
         },
       ],
     },
