@@ -12,6 +12,8 @@ import Login from "../pages/Login";
 import Posts from "../pages/Posts";
 import Register from "../pages/Register";
 import VerifyOtp from "../pages/verify-otp";
+import ResetPassword from "../pages/resetPass";
+import ForgotPassword from "../pages/forgotPass";
 
 function AppRouter() {
   const router = createBrowserRouter([
@@ -26,6 +28,14 @@ function AppRouter() {
     {
       path: "/verify-otp",
       element: <VerifyOtp />,
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword />,
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPassword />,
     },
     {
       path: "/",

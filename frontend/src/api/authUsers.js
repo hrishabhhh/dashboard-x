@@ -14,3 +14,13 @@ export async function loginUser(userData) {
   const response = await api.post("/auth/login", userData);
   return response.data;
 }
+
+export async function forgotPassword(userData) {
+  const response = await api.post("/auth/forgot-password", userData);
+  return response.data;
+}
+
+export async function resetPassword(userData) {
+  const response = await api.post("/auth/reset-password", userData);
+  return response.data;
+}

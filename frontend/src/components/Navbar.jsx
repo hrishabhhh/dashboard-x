@@ -6,7 +6,6 @@ import NavLinking from "./Navlinking";
 function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated, login } = useAuth();
-  console.log(user, isAuthenticated, "Text data for useAuth----------");
   return (
     <nav className="flex flex-row gap-10 p-6 bg-red-500 justify-between">
       <div className="flex flex-row items-center gap-2">
