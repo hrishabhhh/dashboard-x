@@ -15,28 +15,34 @@ import VerifyOtp from "../pages/verify-otp";
 import ResetPassword from "../pages/resetPass";
 import ForgotPassword from "../pages/forgotPass";
 import ProtectedRoutes from "../components/ProtectedRoutes";
+import AuthLayout from "../layouts/AuthLayout";
 
 function AppRouter() {
   const router = createBrowserRouter([
     {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    {
-      path: "/verify-otp",
-      element: <VerifyOtp />,
-    },
-    {
-      path: "/forgot-password",
-      element: <ForgotPassword />,
-    },
-    {
-      path: "/reset-password",
-      element: <ResetPassword />,
+      element: <AuthLayout />,
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
+        {
+          path: "/verify-otp",
+          element: <VerifyOtp />,
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPassword />,
+        },
+      ],
     },
     {
       path: "/",
