@@ -12,8 +12,8 @@ import Login from "../pages/Login";
 import Posts from "../pages/Posts";
 import Register from "../pages/Register";
 import VerifyOtp from "../pages/verify-otp";
-import ResetPassword from "../pages/resetPass";
-import ForgotPassword from "../pages/forgotPass";
+import ResetPassword from "../pages/ResetPassword";
+import ForgotPassword from "../pages/ForgotPassword";
 import ProtectedRoutes from "../components/ProtectedRoutes";
 import AuthLayout from "../layouts/AuthLayout";
 

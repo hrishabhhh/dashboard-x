@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUsers } from "../api/users";
 import Loader from "../components/Loader";
-import Error from "../components/error";
+import Error from "../components/Error";
 import UserCard from "../components/UserCard";
 import { deleteUser } from "../api/users";
 import UserForm from "../components/UserForm";
