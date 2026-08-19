@@ -5,7 +5,11 @@ import cors from "cors";
 import { errorHandler } from "./middleware/error.middleware.js";
 import helmet from "helmet";
 const app = express();
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://dashboard-efhbn2hei-hrishabhhhs-projects.vercel.app",
+];
 app.use(
   cors({
     origin: allowedOrigins,
