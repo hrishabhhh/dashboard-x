@@ -78,7 +78,7 @@ function Users() {
       <h3 className="text-bold mx-6 my-4 font-bold text-[22px]">
         Added Users :
       </h3>
-      <div className="flex flex-col gap-5 m-5">
+      <div className="flex flex-col gap-5 mt-5 mx-5 pb-10">
         {users.map((user) => (
           <UserCard
             key={user._id}
