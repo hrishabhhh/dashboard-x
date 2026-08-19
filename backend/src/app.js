@@ -8,7 +8,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://dashboard-efhbn2hei-hrishabhhhs-projects.vercel.app",
+  "https://dashboard-x-iota.vercel.app",
 ];
 app.use(
   cors({
