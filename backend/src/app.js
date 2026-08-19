@@ -10,7 +10,6 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://dashboard-x-iota.vercel.app",
   "https://dashboard-x-git-main-hrishabhhhs-projects.vercel.app/",
-  "https://dashboard-kyx51hu6l-hrishabhhhs-projects.vercel.app/",
 ];
 app.use(
   cors({
