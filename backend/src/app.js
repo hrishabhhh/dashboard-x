@@ -1,6 +1,7 @@
 import express from "express";
 import userRoutes from "./routes/users.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import taskRoutes from "./routes/tasks.routes.js";
 import cors from "cors";
 import { errorHandler } from "./middleware/error.middleware.js";
 import helmet from "helmet";
@@ -27,7 +28,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
-
+app.use("/task", taskRoutes);
 app.use(errorHandler);
 
 export default app;
