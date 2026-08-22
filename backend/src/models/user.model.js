@@ -1,6 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema({
+  account: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
+    unique: true,
+    sparse: true,
+  },
+
   name: String,
   username: String,
   email: String,

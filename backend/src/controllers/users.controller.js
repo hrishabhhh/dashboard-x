@@ -45,7 +45,7 @@ export const createUser = asyncHandler(async (req, res) => {
     });
   }
   // console.log("errors data - - - ", validatedData);
-  const createdUser = await createUserService(userData);
+  const createdUser = await createUserService(userData, req.user._id);
   if (!createdUser) {
     return res.status(400).json({
       success: false,

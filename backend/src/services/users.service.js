@@ -1,5 +1,6 @@
 import { readUsers, writeUsers } from "../utils/file.js";
 import User from "../models/user.model.js";
+import AppError from "../utils/AppError.js";
 // import api from "../config/axios.js";
 
 function buildUser(id, userData) {
@@ -29,8 +30,15 @@ export async function createUserService(userData) {
   // data.push(response);
   // await writeUsers(data);
   // return response;
+  const existingUser = await User.findOne({
+    account: accountId,
+  });
 
-  const response = await User.create(userData);
+  if (existingUser) {
+    throw new AppError("You are already registered as a User", 409);
+  }
+
+  const response = await User.create({ ...userData, account: accountId });
   return response;
 }
 

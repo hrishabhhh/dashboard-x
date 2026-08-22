@@ -7,11 +7,13 @@ import {
   patchUser,
 } from "../controllers/users.controller.js";
 
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
 const router = express.Router();
 
 router.get("/", getUsers);
 
-router.post("/", createUser);
+router.post("/", verifyJWT, createUser);
 
 router.put("/:id", putUser);
 
