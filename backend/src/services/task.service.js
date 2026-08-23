@@ -24,3 +24,12 @@ export async function createTaskService(TaskData, accountId) {
   });
   return response;
 }
+
+export async function getTasksService() {
+  const tasks = await Task.find()
+    .populate("assignedTo", "name email")
+    .populate("assignedBy", "name email")
+    .sort({ creatadAt: -1 });
+
+  return tasks;
+}

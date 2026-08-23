@@ -1,6 +1,17 @@
-import { createTaskService } from "../services/task.service.js";
+import {
+  createTaskService,
+  getTasksService,
+} from "../services/task.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { validateTask } from "../validators/task.validator.js";
+
+export const getTasks = asyncHandler(async (req, res) => {
+  const tasks = await getTasksService();
+  return res.status(200).json({
+    success: true,
+    tasks,
+  });
+});
 
 export const createTask = asyncHandler(async (req, res) => {
   const taskData = req.body;
