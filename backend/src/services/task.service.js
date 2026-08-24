@@ -1,6 +1,8 @@
 import Task from "../models/task.model.js";
 import User from "../models/user.model.js";
+import { taskAssignedTemplate } from "../templates/taskAssignedTemplate.js";
 import AppError from "../utils/AppError.js";
+import sendMail from "../utils/email.js";
 
 export async function createTaskService(TaskData, accountId) {
   const assigningUser = await User.findOne({
@@ -11,7 +13,10 @@ export async function createTaskService(TaskData, accountId) {
     throw new AppError("Please register yourself before assigning tasks", 403);
   }
 
-  const assignedUser = await User.findById(TaskData.assignedTo);
+  const assignedUser = await User.findById(TaskData.assignedTo).populate(
+    "account",
+    "name email",
+  );
 
   if (!assignedUser) {
     throw new AppError("Assigned User not found", 404);
@@ -22,6 +27,26 @@ export async function createTaskService(TaskData, accountId) {
     assignedTo: assignedUser.id,
     assignedBy: assigningUser.id,
   });
+
+  try {
+    const html = taskAssignedTemplate({
+      assignedToName: assignedUser.name,
+      assignedByName: assigningUser.name,
+      title: response.title,
+      description: response.description,
+      priority: response.priority,
+      dueDate: response.dueDate,
+    });
+
+    await sendMail({
+      to: assignedUser.account.email,
+      subject: `New task assigned: ${response.title}`,
+      html,
+    });
+  } catch (error) {
+    console.log("Task Created but email login failed", error);
+  }
+
   return response;
 }
 
