@@ -33,3 +33,26 @@ export async function getTasksService() {
 
   return tasks;
 }
+
+export async function patchTasksService(taskId, taskData, accountId) {
+  const currentUser = await User.findOne({ account: accountId });
+  if (!currentUser) {
+    throw new AppError("You must be registered as user to update Task", 403);
+  }
+
+  const task = await Task.findById(taskId);
+  if (!task) {
+    throw new AppError("Task not found", 404);
+  }
+
+  if (task.assignedTo.toString() !== currentUser._id.toString()) {
+    throw new AppError("You are not authorized to Edit this Task", 403);
+  }
+
+  const updatedTask = await Task.findByIdAndUpdate(taskId, taskData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return updatedTask;
+}

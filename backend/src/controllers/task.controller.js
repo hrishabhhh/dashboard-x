@@ -1,9 +1,13 @@
 import {
   createTaskService,
   getTasksService,
+  patchTasksService,
 } from "../services/task.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { validateTask } from "../validators/task.validator.js";
+import {
+  validatePatchTask,
+  validateTask,
+} from "../validators/task.validator.js";
 
 export const getTasks = asyncHandler(async (req, res) => {
   const tasks = await getTasksService();
@@ -37,5 +41,27 @@ export const createTask = asyncHandler(async (req, res) => {
   return res.status(201).json({
     success: true,
     task: createdTask,
+  });
+});
+
+export const patchTask = asyncHandler(async (req, res) => {
+  const taskId = req.params.id;
+  const taskData = req.body;
+  const accountId = req.user._id;
+  const validatedTask = validatePatchTask(taskData);
+
+  if (!validatedTask.isValid) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation Failed",
+      errors: validatedTask.errors,
+    });
+  }
+
+  const patchedTask = await patchTasksService(taskId, taskData, accountId);
+  return res.status(200).json({
+    success: true,
+    message: "Task has been successfully modified",
+    task: patchedTask,
   });
 });
