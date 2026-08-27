@@ -49,7 +49,7 @@ function TaskList({ refreshKey }) {
   return (
     <>
       <div className="m-6">{<CreateTask onTaskCreated={loadTasks} />}</div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="flex flex-col gap-5">
         {tasks.map((task) => {
           const canEdit =
             currentRegisteredUser &&
