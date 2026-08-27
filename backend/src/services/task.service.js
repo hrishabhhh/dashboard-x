@@ -28,23 +28,27 @@ export async function createTaskService(TaskData, accountId) {
     assignedBy: assigningUser.id,
   });
 
-  try {
-    const html = taskAssignedTemplate({
-      assignedToName: assignedUser.name,
-      assignedByName: assigningUser.name,
-      title: response.title,
-      description: response.description,
-      priority: response.priority,
-      dueDate: response.dueDate,
-    });
+  if (assignedUser.account.email) {
+    try {
+      const html = taskAssignedTemplate({
+        assignedToName: assignedUser.name,
+        assignedByName: assigningUser.name,
+        title: response.title,
+        description: response.description,
+        priority: response.priority,
+        dueDate: response.dueDate,
+      });
 
-    await sendMail({
-      to: assignedUser.account.email,
-      subject: `New task assigned: ${response.title}`,
-      html,
-    });
-  } catch (error) {
-    console.log("Task Created but email login failed", error);
+      await sendMail({
+        to: assignedUser.account.email,
+        subject: `New task assigned: ${response.title}`,
+        html,
+      });
+    } catch (error) {
+      console.log("Task Created but email login failed", error);
+    }
+  } else {
+    console.warn("Task created but assigned user has no linked account/email");
   }
 
   return response;
