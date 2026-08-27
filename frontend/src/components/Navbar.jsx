@@ -4,7 +4,7 @@ import { useTheme } from "../hooks/useTheme";
 import NavLinking from "./Navlinking";
 // import { useContext } from "react";
 // import { ThemeContext } from "../context/ThemeContext";
-function Navbar() {
+function Navbar({ onCreateTask }) {
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, logout } = useAuth();
   return (
@@ -26,6 +26,16 @@ function Navbar() {
         >
           {theme === "light" ? "🌞" : "🌙"}
         </button>
+
+        {isAuthenticated && (
+          <button
+            type="button"
+            onClick={onCreateTask}
+            className="rounded-lg bg-white px-3 py-1 font-medium text-red-600 transition hover:bg-red-100"
+          >
+            + Create Task
+          </button>
+        )}
 
         {isAuthenticated ? (
           <button onClick={logout}>Logout</button>
