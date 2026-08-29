@@ -6,12 +6,14 @@ import Error from "../components/Error";
 import { getUsers } from "../api/users";
 import { useAuth } from "../hooks/useAuth";
 import CreateTask from "../components/CreateTask";
+import EditTask from "../components/EditTask";
 
 function TaskList({ refreshKey }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentRegisteredUser, setCurrentRegisteredUser] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
   const { user } = useAuth();
 
   async function loadTasks() {
@@ -49,6 +51,7 @@ function TaskList({ refreshKey }) {
   return (
     <>
       <div className="m-6">{<CreateTask onTaskCreated={loadTasks} />}</div>
+
       <div className="flex flex-col gap-5">
         {tasks.map((task) => {
           const canEdit =
@@ -86,13 +89,27 @@ function TaskList({ refreshKey }) {
                   : "N/A"}
               </p>
               {canEdit && (
-                <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 mt-2">
+                <button
+                  onClick={() => setSelectedTask(task)}
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 mt-2"
+                >
                   Edit Task
                 </button>
               )}
             </div>
           );
         })}
+      </div>
+      <div>
+        {selectedTask && (
+          <EditTask
+            // key={selectedTask._id}
+            task={selectedTask}
+            isOpen={!!selectedTask}
+            isClose={() => setSelectedTask(null)}
+            onTaskUpdated={loadTasks}
+          />
+        )}
       </div>
     </>
   );
