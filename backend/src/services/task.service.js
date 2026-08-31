@@ -85,3 +85,24 @@ export async function patchTasksService(taskId, taskData, accountId) {
 
   return updatedTask;
 }
+
+export async function deleteTaskService(taskId, accountId) {
+  const currentUser = await User.findOne({ account: accountId });
+
+  if (!currentUser) {
+    throw new AppError("You must be registered as user to delete Tasks", 403);
+  }
+
+  const task = await Task.findById(taskId);
+
+  if (!task) {
+    throw new AppError("Task Not found", 404);
+  }
+
+  if (task.assignedBy.toString() !== currentUser._id.toString()) {
+    throw new AppError("You are not authorized to delete this Task", 403);
+  }
+
+  const response = await Task.findByIdAndDelete(taskId);
+  return response;
+}

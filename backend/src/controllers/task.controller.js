@@ -1,5 +1,6 @@
 import {
   createTaskService,
+  deleteTaskService,
   getTasksService,
   patchTasksService,
 } from "../services/task.service.js";
@@ -63,5 +64,18 @@ export const patchTask = asyncHandler(async (req, res) => {
     success: true,
     message: "Task has been successfully modified",
     task: patchedTask,
+  });
+});
+
+export const deleteTask = asyncHandler(async (req, res) => {
+  const taskId = req.params.id;
+  const accountId = req.user._id;
+
+  const deletedTask = await deleteTaskService(taskId, accountId);
+
+  return res.status(200).json({
+    success: true,
+    message: "Task deleted Successfully",
+    deletedTask,
   });
 });
