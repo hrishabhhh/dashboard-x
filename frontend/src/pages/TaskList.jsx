@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { getTasks } from "../api/tasks";
+import { deleteTask, getTasks } from "../api/tasks";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import { getUsers } from "../api/users";
@@ -21,9 +21,9 @@ function TaskList({ refreshKey }) {
       const data = await getTasks();
       const usersData = await getUsers();
       const matchedUser = usersData.find(
-        (registeredUser) =>
-          String(registeredUser.account) === String(user?._id),
+        (registeredUser) => String(registeredUser.account) === String(user?.id),
       );
+
       setCurrentRegisteredUser(matchedUser || null);
       setTasks(data.tasks);
     } catch (error) {
@@ -40,7 +40,18 @@ function TaskList({ refreshKey }) {
     }
     initialLoad();
   }, [user, refreshKey]);
-  console.log("TASKLIST REFRESH KEY:", refreshKey);
+
+  async function handleDeleteTask(taskId) {
+    try {
+      await deleteTask(taskId);
+      await loadTasks();
+    } catch (error) {
+      setError(
+        error.response.data.message || error.message || "Task deletion failed",
+      );
+    }
+  }
+
   if (loading) {
     return <Loader message="Loading Tasks" />;
   }
@@ -52,11 +63,16 @@ function TaskList({ refreshKey }) {
     <>
       <div className="m-6">{<CreateTask onTaskCreated={loadTasks} />}</div>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col w-max gap-5">
         {tasks.map((task) => {
           const canEdit =
             currentRegisteredUser &&
             String(task.assignedTo?._id) === String(currentRegisteredUser?._id);
+
+          const canDelete =
+            currentRegisteredUser &&
+            String(task.assignedBy?._id) === String(currentRegisteredUser?._id);
+
           return (
             <div
               key={task._id}
@@ -91,9 +107,17 @@ function TaskList({ refreshKey }) {
               {canEdit && (
                 <button
                   onClick={() => setSelectedTask(task)}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 mt-2"
+                  className="bg-green-500 text-white mr-2 px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 mt-2"
                 >
                   Edit Task
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  onClick={() => handleDeleteTask(task._id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-300 mt-2"
+                >
+                  Delete
                 </button>
               )}
             </div>
