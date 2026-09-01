@@ -15,6 +15,7 @@ function TaskList({ refreshKey }) {
   const [selectedTask, setSelectedTask] = useState(null);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
   const { user } = useAuth();
+  const { user: authUser, isAuthenticated, loading: authLoading } = useAuth();
 
   async function loadTasks() {
     try {
@@ -59,6 +60,28 @@ function TaskList({ refreshKey }) {
     "bg-indigo-950 border-indigo-800",
     "bg-cyan-950 border-cyan-800",
   ];
+
+  if (authLoading) {
+    return <Loader message="Checking Authentication" />;
+  }
+
+  if (!isAuthenticated || !authUser) {
+    return (
+      <>
+        <div className="flex min-h-[10vh] items-center justify-center px-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-500">
+              Welcome to Dashboard-X
+            </h2>
+
+            <p className="mt-2 text-gray-500">
+              Login or register to view and manage your tasks.
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (loading) {
     return <Loader message="Loading Tasks" />;
