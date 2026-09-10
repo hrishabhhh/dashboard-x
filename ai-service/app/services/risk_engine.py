@@ -1,4 +1,4 @@
-from datetime import datetime,timezone
+from datetime import datetime,timezone,timedelta
 from app.schemas.task import TaskInput
 
 def get_overdue_task(tasks:list[TaskInput]) -> list[TaskInput]:
@@ -32,7 +32,44 @@ def analyze_overdue_risk(tasks: list[TaskInput]):
     
     return {
         "type": "overdue",
-        "overdueCount": overdue_count,
+        "count": overdue_count,
         "severity": severity,
         "tasks": overdue_tasks
+    }
+
+def get_deadline_risk_tasks(tasks: list[TaskInput]) -> list[TaskInput]:
+    now = datetime.now(timezone.utc)
+    deadline_risk_tasks = []
+    deadline_limit = now + timedelta(hours = 48)
+
+    for task in tasks: 
+        if(task.status == "completed" or task.priority != "high"):
+            continue
+        if(task.dueDate > now and task.dueDate <= deadline_limit):
+            deadline_risk_tasks.append(task)
+
+    return deadline_risk_tasks
+
+
+def get_deadline_severity(count: int) -> str: 
+    if(count >= 3):
+        return "high"
+    elif(count == 2):
+        return "medium"
+    elif(count == 1):
+        return "low"
+    else:
+        return "none"
+    
+def analyze_deadline_risk(tasks: list[TaskInput]):
+
+    deadline_risk_tasks = get_deadline_risk_tasks(tasks)
+    deadline_risk_count = len(deadline_risk_tasks)
+    severity = get_deadline_severity(deadline_risk_count)
+
+    return {
+        "type":"deadline",
+        "count": deadline_risk_count,
+        "severity": severity,
+        "tasks": deadline_risk_tasks
     }
