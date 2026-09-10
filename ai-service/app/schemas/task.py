@@ -4,7 +4,7 @@ from enum import Enum
 
 class TaskStatus(str,Enum):
     pending = "pending"
-    in_progress = "in_progress"
+    in_progress = "in-progress"
     completed = "completed"
 
 class TaskPriority(str,Enum):
@@ -22,5 +22,7 @@ class TaskInput(BaseModel):
     assignedTo: str
     assignedBy: str
 
+class RiskAnalysisResult(BaseModel):
+    tasks: list[TaskInput]
 
 
