@@ -109,5 +109,61 @@ def analyze_stagnation_risk(tasks: list[TaskInput]):
         "tasks": stagnation_risk_tasks
     }
 
+def get_active_workload(tasks: list[TaskInput]) -> dict:
+    workload = {}
+
+    for task in tasks:
+        if(task.status == "completed"):
+            continue
+        if(task.assignedTo in workload):
+            workload[task.assignedTo] += 1
+        else:
+            workload[task.assignedTo] = 1
+
+    return workload
+
+def get_workload_percentage(workload: dict) -> dict:
+    total_active_tasks = sum(workload.values())
+
+    workload_percentage = {}
+
+    if(total_active_tasks == 0):
+        return workload_percentage
+    
+    for user, task_count in workload.items():
+        workload_percentage[user] = (task_count / total_active_tasks) * 100
+    
+    return workload_percentage
+
+def get_workload_severity(workload_percentage: dict,
+total_active_tasks: int) -> str:
+
+    if(total_active_tasks < 5):
+        return "none"
+    highest_percentage = max(workload_percentage.values())
+
+    if(highest_percentage > 70):
+        return "high"
+    elif(highest_percentage > 50):
+        return "medium"
+    else:
+        return "none"
+
+def analyze_workload_risk(tasks: list[TaskInput]) -> dict:
+
+    workload = get_active_workload(tasks)
+    workload_percentage = get_workload_percentage(workload)
+    total_active_tasks = sum(workload.values())
+    severity = get_workload_severity(workload_percentage, total_active_tasks)
+
+    return {
+        "type":"workload",
+        "totalActiveTasks": total_active_tasks,
+        "workloadpercentage": workload_percentage,
+        "severity": severity
+    }
+
+    
+
     
 
