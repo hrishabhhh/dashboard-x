@@ -19,6 +19,7 @@ class TaskInput(BaseModel):
     status: TaskStatus
     priority: TaskPriority
     dueDate: datetime
+    updatedAt: datetime
     assignedTo: str
     assignedBy: str
 

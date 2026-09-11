@@ -73,3 +73,41 @@ def analyze_deadline_risk(tasks: list[TaskInput]):
         "severity": severity,
         "tasks": deadline_risk_tasks
     }
+
+def get_stagnation_risk(tasks: list[TaskInput]) -> list[TaskInput]:
+    now = datetime.now(timezone.utc)
+    stagnation_risk_tasks = []
+    stagnation_limit = now - timedelta(days = 5)
+
+    for task in tasks:
+        # if(task.status == "completed"):
+        #     continue
+        if( task.status == "in-progress" and task.updatedAt <= stagnation_limit):
+            stagnation_risk_tasks.append(task)
+        
+    return stagnation_risk_tasks
+
+def get_stagnation_severity(count: int) -> str:
+    if(count >= 3):
+        return "high"
+    elif(count ==2):
+        return "medium"
+    elif(count == 1):
+        return "low"
+    else:
+        return "none"
+
+def analyze_stagnation_risk(tasks: list[TaskInput]):
+    stagnation_risk_tasks = get_stagnation_risk(tasks)
+    stagnation_risk_count = len(stagnation_risk_tasks)
+    severity = get_stagnation_severity(stagnation_risk_count)
+
+    return {
+        "type": "stagnation",
+        "count": stagnation_risk_count,
+        "severity": severity,
+        "tasks": stagnation_risk_tasks
+    }
+
+    
+

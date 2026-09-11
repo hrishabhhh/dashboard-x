@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from app.schemas.task import TaskInput
-from app.services.risk_engine import analyze_overdue_risk
 from app.schemas.task import RiskAnalysisResult
-from app.services.risk_engine import analyze_deadline_risk
+from app.services.risk_engine import analyze_overdue_risk, analyze_deadline_risk, analyze_stagnation_risk
 
 app = FastAPI()
 
@@ -24,6 +23,7 @@ def root(task : TaskInput):
 def analyze_risk(request: RiskAnalysisResult):
     overdue_risk = analyze_overdue_risk(request.tasks)
     deadline_risk = analyze_deadline_risk(request.tasks)
+    stagnation_risk = analyze_stagnation_risk(request.tasks)
     # return {
     #     "overdueTasks": overdue_tasks,
     #     "overdueCount": len(overdue_tasks)
@@ -32,6 +32,7 @@ def analyze_risk(request: RiskAnalysisResult):
     return {
        "signals": {
         "overdue": overdue_risk,
-        "deadline": deadline_risk
+        "deadline": deadline_risk,
+        "stagnation": stagnation_risk
        }
     }
