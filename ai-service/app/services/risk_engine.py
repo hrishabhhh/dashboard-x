@@ -163,7 +163,35 @@ def analyze_workload_risk(tasks: list[TaskInput]) -> dict:
         "severity": severity
     }
 
+def get_delivery_pressure_tasks(tasks: list[TaskInput]) -> list[TaskInput]:
+    now = datetime.now(timezone.utc)
+    pressure_limit = now + timedelta(days=3)
+    delivery_pressure_tasks = []
     
-
+    for task in tasks:
+        if(task.status != "completed" and now < task.dueDate <= pressure_limit):
+            delivery_pressure_tasks.append(task)
+    return delivery_pressure_tasks
     
+def get_delivery_pressure_severity(count: int) -> str:
 
+    if(count >= 5):
+        return "high"
+    elif(count >= 3):
+        return "medium"
+    elif(count >= 1):
+        return "low"
+    else:
+        return "none"
+
+def analyze_delivery_pressure_risk(tasks: list[TaskInput]) -> dict:
+    delivery_pressure_tasks = get_delivery_pressure_tasks(tasks)
+    delivery_pressure_count = len(delivery_pressure_tasks)
+    severity = get_delivery_pressure_severity(delivery_pressure_count)
+
+    return {
+        "type": "delivery_pressure",
+        "count": delivery_pressure_count,
+        "severity": severity,
+        "tasks": delivery_pressure_tasks
+    }
