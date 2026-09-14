@@ -159,7 +159,7 @@ def analyze_workload_risk(tasks: list[TaskInput]) -> dict:
     return {
         "type":"workload",
         "totalActiveTasks": total_active_tasks,
-        "workloadpercentage": workload_percentage,
+        "workload_percentage": workload_percentage,
         "severity": severity
     }
 
