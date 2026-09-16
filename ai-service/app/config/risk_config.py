@@ -11,7 +11,7 @@ RISK_WEIGHTS = {
     "deadline": 20,
     "stagnation": 10,
     "workload": 20,
-    "deliveryPressure": 20
+    "delivery_pressure": 20
 }
 
 
