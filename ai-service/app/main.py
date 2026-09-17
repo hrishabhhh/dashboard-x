@@ -3,6 +3,7 @@ from app.schemas.task import TaskInput
 from app.schemas.task import RiskAnalysisResult
 from app.services.risk_engine import analyze_overdue_risk, analyze_deadline_risk, analyze_stagnation_risk, analyze_workload_risk,analyze_delivery_pressure_risk
 from app.services.overall_risk import calculate_overall_risk_score,get_overall_risk_level
+from app.services.ai_analyzer import analyze_risk_with_ai
 app = FastAPI()
 
 @app.get("/")
@@ -26,6 +27,7 @@ def analyze_risk(request: RiskAnalysisResult):
     stagnation_risk = analyze_stagnation_risk(request.tasks)
     workload_risk = analyze_workload_risk(request.tasks)
     delivery_pressure_risk = analyze_delivery_pressure_risk(request.tasks)
+
     # return {
     #     "overdueTasks": overdue_tasks,
     #     "overdueCount": len(overdue_tasks)
@@ -41,6 +43,12 @@ def analyze_risk(request: RiskAnalysisResult):
 
     overall_score = calculate_overall_risk_score(signals)
     overall_level = get_overall_risk_level(overall_score)
+    
+    ai_prompt = analyze_risk_with_ai(
+    overall_score,
+    overall_level,
+    signals
+)
 
     return {
     #    "signals": {
@@ -51,5 +59,6 @@ def analyze_risk(request: RiskAnalysisResult):
     #     "delivery_pressure": delivery_pressure_risk
     "overall_risk_score": round(overall_score,2),
     "overall_risk_level":overall_level,
-    "signals": signals
+    "signals": signals,
+    "ai_prompt": ai_prompt
     }
