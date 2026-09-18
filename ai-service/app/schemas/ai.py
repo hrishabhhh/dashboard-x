@@ -12,4 +12,7 @@ class AIAnalysisResult(BaseModel):
     risks: list[str]
     recommendations: list[str]
 
-
+class RiskInterpretationRequest(BaseModel):
+    overall_risk_score: float
+    overall_risk_level: AIRiskLevel
+    signals: dict

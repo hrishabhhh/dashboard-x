@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.schemas.task import TaskInput
 from app.schemas.task import RiskAnalysisResult
+from app.schemas.ai import RiskInterpretationRequest
 from app.services.risk_engine import analyze_overdue_risk, analyze_deadline_risk, analyze_stagnation_risk, analyze_workload_risk,analyze_delivery_pressure_risk
 from app.services.overall_risk import calculate_overall_risk_score,get_overall_risk_level
 from app.services.ai_analyzer import analyze_risk_with_ai
@@ -62,3 +63,12 @@ def analyze_risk(request: RiskAnalysisResult):
     "signals": signals,
     "ai_prompt": ai_prompt
     }
+
+@app.post("/risk/interpret")
+def interpret_risk(request: RiskInterpretationRequest): 
+    analysis = analyze_risk_with_ai(
+        request.overall_risk_score,
+        request.overall_risk_level.value,
+        request.signals
+    )
+    return analysis
