@@ -9,6 +9,8 @@ import {
   validatePatchTask,
   validateTask,
 } from "../validators/task.validator.js";
+// import { getTasks as getTasksServices } from "../services/task.service.js";
+import { getTaskRiskInsights } from "../services/intelligence.service.js";
 
 export const getTasks = asyncHandler(async (req, res) => {
   const tasks = await getTasksService();
@@ -79,3 +81,20 @@ export const deleteTask = asyncHandler(async (req, res) => {
     deletedTask,
   });
 });
+
+export const getRiskInsights = async (req, res, next) => {
+  console.log("REQ EXISTS:", !!req);
+  console.log("RES EXISTS:", !!res);
+  try {
+    const tasks = await getTasksService();
+    const insights = await getTaskRiskInsights(tasks);
+
+    return res.status(200).json({
+      success: true,
+      message: "Risk insights fetched successfully",
+      insights,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
