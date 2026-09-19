@@ -7,7 +7,6 @@ class AIRiskLevel(str, Enum):
     high = "high"
 
 class AIAnalysisResult(BaseModel):
-    riskLevel: AIRiskLevel
     summary: str
     risks: list[str]
     recommendations: list[str]

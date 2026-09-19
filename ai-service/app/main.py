@@ -44,12 +44,6 @@ def analyze_risk(request: RiskAnalysisResult):
 
     overall_score = calculate_overall_risk_score(signals)
     overall_level = get_overall_risk_level(overall_score)
-    
-    ai_prompt = analyze_risk_with_ai(
-    overall_score,
-    overall_level,
-    signals
-)
 
     return {
     #    "signals": {
@@ -60,8 +54,7 @@ def analyze_risk(request: RiskAnalysisResult):
     #     "delivery_pressure": delivery_pressure_risk
     "overall_risk_score": round(overall_score,2),
     "overall_risk_level":overall_level,
-    "signals": signals,
-    "ai_prompt": ai_prompt
+    "signals": signals
     }
 
 @app.post("/risk/interpret")
