@@ -130,9 +130,9 @@ function TaskList({ refreshKey }) {
                   {/* Header */}
                   <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                     <div className="min-w-0">
-                      <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400">
+                      {/* <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-red-400">
                         Dashboard-X Task
-                      </p>
+                      </p> */}
 
                       <h3 className="truncate text-xl font-bold text-white">
                         {task.title}
