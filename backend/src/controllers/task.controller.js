@@ -83,8 +83,6 @@ export const deleteTask = asyncHandler(async (req, res) => {
 });
 
 export const getRiskInsights = async (req, res, next) => {
-  console.log("REQ EXISTS:", !!req);
-  console.log("RES EXISTS:", !!res);
   try {
     const tasks = await getTasksService();
     const insights = await getTaskRiskInsights(tasks);
