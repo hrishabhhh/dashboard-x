@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { getRiskInsights } from "../api/risk";
+import { useAuth } from "../hooks/useAuth";
 
 function RiskInsights() {
   const [riskData, setRiskData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { user: authUser, isAuthenticated } = useAuth();
 
   useEffect(() => {
     async function insights() {
@@ -22,9 +24,13 @@ function RiskInsights() {
     insights();
   }, []);
 
+  if (!isAuthenticated || !authUser) {
+    return null;
+  }
+
   if (loading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center bg-gray-950 text-gray-400">
+      <div className="flex min-h-[100px] mb-5 items-center justify-center bg-gray-950 text-gray-400">
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-700 border-t-red-500" />
           <p className="text-sm">Analyzing project risks...</p>
@@ -72,8 +78,8 @@ function RiskInsights() {
   }
 
   return (
-    <div className="min-h-screen min-w-full bg-gray-950 px-4 py-6 text-white sm:px-6 lg:px-8 rounded-2xl">
-      <div className="mx-auto space-y-6 rounded-full">
+    <div className="min-h-screen bg-gray-950 px-4 py-6 mb-5 text-white sm:px-6 lg:px-8 rounded-xl">
+      <div className="mx-auto max-w-7xl space-y-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-red-400">

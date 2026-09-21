@@ -6,6 +6,7 @@ import Error from "../components/Error";
 import { getUsers } from "../api/users";
 import { useAuth } from "../hooks/useAuth";
 import EditTask from "../components/EditTask";
+import RiskInsights from "../components/RiskInsights";
 
 function TaskList({ refreshKey }) {
   const [tasks, setTasks] = useState([]);
@@ -92,8 +93,13 @@ function TaskList({ refreshKey }) {
   }
   return (
     <>
-      <div className="w-full px-4 py-4">
-        <div className="flex flex-col gap-4">
+      <div className="flex flex-col justify-center items-center w-full px-4 py-4">
+        <RiskInsights />
+
+        <h1 className=" text-xl font-bold text-white-900 m-4 uppercase">
+          Tasks View
+        </h1>
+        <div className="grid grid-cols-2 gap-4">
           {tasks.map((task, index) => {
             const cardColor = cardColors[index % cardColors.length];
             const canEdit =
