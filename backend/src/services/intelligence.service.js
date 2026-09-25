@@ -60,10 +60,21 @@ async function interpretTaskRisk(riskAnalysis) {
 
 export async function getTaskRiskInsights(tasks) {
   const analysis = await analyseTaskRisk(tasks);
-  const interpretation = await interpretTaskRisk(analysis);
+  // console.log("analysis  - - - -", analysis, interpretation);
+  try {
+    const interpretation = await interpretTaskRisk(analysis);
 
-  return {
-    ...analysis,
-    ai_insights: interpretation,
-  };
+    return {
+      ...analysis,
+      ai_insights: interpretation,
+      ai_status: "available",
+    };
+  } catch (error) {
+    console.log("AI interpretation failed:", error.message);
+    return {
+      ...analysis,
+      ai_insights: null,
+      ai_status: "unavailable",
+    };
+  }
 }

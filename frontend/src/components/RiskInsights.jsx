@@ -141,9 +141,22 @@ function RiskInsights() {
               </div>
             </div>
 
-            <p className="max-w-4xl text-sm leading-7 text-gray-300">
-              {riskData.ai_insights.summary}
-            </p>
+            {riskData.ai_status == "available" && riskData.ai_insights ? (
+              <p className="max-w-4xl text-sm leading-7 text-gray-300">
+                {riskData.ai_insights.summary}
+              </p>
+            ) : (
+              <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-4">
+                <p className="text-sm font-medium text-yellow-300">
+                  AI insights are temporarily unavailable.
+                </p>
+
+                <p className="mt-1 text-xs text-gray-400">
+                  Deterministic risk analysis is still available and remains
+                  unaffected.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -199,58 +212,62 @@ function RiskInsights() {
           </div>
         </section>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <section className="rounded-2xl border border-red-900/40 bg-gray-900 p-6">
-            <div className="mb-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-400">
-                Attention Required
-              </p>
-              <h2 className="mt-1 text-lg font-semibold">Identified Risks</h2>
-            </div>
+        {riskData.status == "available" && riskData.ai_insights && (
+          <div className="grid gap-4 lg:grid-cols-2">
+            <section className="rounded-2xl border border-red-900/40 bg-gray-900 p-6">
+              <div className="mb-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-400">
+                  Attention Required
+                </p>
+                <h2 className="mt-1 text-lg font-semibold">Identified Risks</h2>
+              </div>
 
-            <div className="space-y-3">
-              {riskData.ai_insights.risks.map((risk, index) => (
-                <div
-                  key={index}
-                  className="flex gap-3 rounded-xl border border-gray-800 bg-gray-950/70 p-4"
-                >
-                  <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-red-500" />
-
-                  <p className="text-sm leading-6 text-gray-300">{risk}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
-            <div className="mb-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
-                Suggested Actions
-              </p>
-
-              <h2 className="mt-1 text-lg font-semibold">AI Recommendations</h2>
-            </div>
-
-            <div className="space-y-3">
-              {riskData.ai_insights.recommendations.map(
-                (recommendation, index) => (
+              <div className="space-y-3">
+                {riskData.ai_insights.risks.map((risk, index) => (
                   <div
                     key={index}
                     className="flex gap-3 rounded-xl border border-gray-800 bg-gray-950/70 p-4"
                   >
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-400">
-                      {index + 1}
-                    </div>
+                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-red-500" />
 
-                    <p className="text-sm leading-6 text-gray-300">
-                      {recommendation}
-                    </p>
+                    <p className="text-sm leading-6 text-gray-300">{risk}</p>
                   </div>
-                ),
-              )}
-            </div>
-          </section>
-        </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
+              <div className="mb-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+                  Suggested Actions
+                </p>
+
+                <h2 className="mt-1 text-lg font-semibold">
+                  AI Recommendations
+                </h2>
+              </div>
+
+              <div className="space-y-3">
+                {riskData.ai_insights.recommendations.map(
+                  (recommendation, index) => (
+                    <div
+                      key={index}
+                      className="flex gap-3 rounded-xl border border-gray-800 bg-gray-950/70 p-4"
+                    >
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-400">
+                        {index + 1}
+                      </div>
+
+                      <p className="text-sm leading-6 text-gray-300">
+                        {recommendation}
+                      </p>
+                    </div>
+                  ),
+                )}
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );
