@@ -4,9 +4,14 @@ from app.prompts.risk_prompt import build_risk_prompt
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from app.services.ai_cache import (
+    build_cache_key,
+    get_cache_result,
+    set_cache_result,
+)
 
 load_dotenv()
-
+PROMPT_VERSION = "v1"
 model_name = os.getenv(
     "GEMINI-MODEL",
     "gemini-3.5-flash-lite"
@@ -59,11 +64,26 @@ def analyze_risk_with_ai(
 
     safe_signals = prepare_signals_for_ai(signals)
 
+    risk_data = {
+         "overall_score": overall_score,
+         "overall_level": overall_level,
+         "signals": safe_signals,
+         }
+
+    cache_key = build_cache_key(model_name, PROMPT_VERSION, risk_data)
+
+    cached_result = get_cache_result(cache_key)
+
+    if cached_result is not None:
+        # print("CACHE HIT - skipping Gemini")
+        return AIAnalysisResult.model_validate(cached_result)
+
     prompt = build_risk_prompt(
         overall_score,
         overall_level,
         safe_signals
     )
+    # print("CACHE MISS - calling Gemini")
     response = client.models.generate_content(
         model= model_name,
         contents=prompt,
@@ -72,38 +92,8 @@ def analyze_risk_with_ai(
             response_schema=AIAnalysisResult,
         ),
     )
-    return AIAnalysisResult.model_validate_json(response.text)
+    result = AIAnalysisResult.model_validate_json(response.text)
 
-if __name__ == "__main__":
+    set_cache_result(cache_key, result.model_dump())
 
-    overall_score = 56.67
-    overall_level = "medium"
-
-    signals = {
-         "overdue": {
-            "severity": "medium",
-            "count": 2
-        },
-        "deadline": {
-            "severity": "low",
-            "count": 1
-        },
-        "stagnation": {
-            "severity": "none",
-            "count": 0
-        },
-        "workload": {
-            "severity": "medium"
-        },
-        "delivery_pressure": {
-            "severity": "medium",
-            "count": 3
-        }
-    }
-
-    result = analyze_risk_with_ai(
-        overall_score,
-        overall_level,
-        signals
-)
-
+    return result
