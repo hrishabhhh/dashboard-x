@@ -663,3 +663,89 @@ AI Integration
 ## Dashboard-X
 
 **Task management enhanced with deterministic project risk intelligence and AI-powered delivery insights.**
+
+## AI Response Caching
+
+The AI risk analysis service includes an application-level in-memory caching mechanism to avoid unnecessary duplicate Gemini API calls.
+
+### How It Works
+
+A deterministic SHA-256 cache key is generated using:
+
+- Gemini model name
+- Prompt version
+- Risk analysis input data
+
+```text
+Risk Data + Model + Prompt Version
+              ↓
+        SHA-256 Cache Key
+              ↓
+         Cache Lookup
+          ↙       ↘
+       HIT         MISS
+        ↓            ↓
+Return Cached     Call Gemini
+   Result             ↓
+                  Validate
+                      ↓
+                 Cache Result
+                      ↓
+                    Return
+```
+
+Cached responses use a **10-minute TTL (Time To Live)**. Expired entries are removed automatically when accessed.
+
+The current implementation uses Python in-memory storage, so cached data exists only for the lifetime of the application process. Restarting the AI service clears the cache.
+
+### Cache Deduplication Test
+
+The caching behavior is covered by an automated test using `pytest` and `unittest.mock`.
+
+The Gemini API is mocked during testing so that tests:
+
+- Do not consume Gemini API quota
+- Do not depend on network availability
+- Run quickly and deterministically
+- Verify the caching behavior independently of the external AI service
+
+The test sends two identical AI-analysis requests:
+
+```text
+First Request
+     ↓
+Cache MISS
+     ↓
+Mock Gemini Call
+     ↓
+Cache Response
+
+Second Request
+     ↓
+Cache HIT
+     ↓
+Gemini Skipped
+```
+
+The key assertion verifies that Gemini is called exactly once:
+
+```python
+assert mock_generate.call_count == 1
+assert first_cache_result == second_cache_result
+```
+
+This confirms that identical AI-analysis requests are deduplicated and served from the cache after the initial response.
+
+### Running the AI Cache Test
+
+From the `ai-service` directory:
+
+```bash
+python -m pytest tests/test_ai_analyzer.py -v
+```
+
+Expected result:
+
+```text
+tests/test_ai_analyzer.py::test_ai_result_is_cached PASSED
+```
